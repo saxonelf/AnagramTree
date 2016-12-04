@@ -58,5 +58,109 @@ namespace WordPlay
             }
             return result;
         }
+
+        public static bool HasSameChars(this string str, ref string compareStr)
+        {
+            bool result = true;
+            if (str.Length == compareStr.Length)
+            {
+                for (int i = 0; i < str.Length; i++)
+                {
+                    if (compareStr.IndexOf(str[i]) < 0)
+                    {
+                        result = false;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        public static HashSet<string> GetCombinationStringIngoreOrder(this string str, int wordLen)
+        {
+            if (str.Length < wordLen || wordLen <= 0)
+            {
+                throw new ArgumentOutOfRangeException("The wordLen of combination string should be less or equal, and above zero to the string used to do combination.");
+            }
+
+            var result = new HashSet<string>();
+            int[] wordCounter = new int[wordLen];
+            int[] lastWordCounter = new int[wordLen];
+            int tmpValue = 0;
+            //initiate the counter
+            for (int i = 0; i < wordLen; i++)
+            {
+                wordCounter[i] = tmpValue;
+                lastWordCounter[i] = str.Length - wordLen + tmpValue;
+                tmpValue++;
+            }
+            var tmpStr = new StringBuilder(4);
+            IsEqualIntArray isEqual = (x, y) =>
+            {
+                for (int i = 0; i < x.Length; i++)
+                {
+                    if (x[i] != y[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            };
+            while (!isEqual(wordCounter, lastWordCounter))
+            {
+                tmpStr.Clear();
+
+                //generate combination
+                for (int i = 0; i < wordLen; i++)
+                {
+                    tmpStr.Append(str[wordCounter[i]]);
+                }
+                result.Add(tmpStr.ToString());
+
+                //increase the word counter
+                for (int i = wordLen - 1; i >= 0; i--)
+                {
+                    if ((wordCounter[i] + 1) > lastWordCounter[i])
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        for (int j = i; j < wordLen; j++)
+                        {
+                            if (j == i)
+                            {
+                                wordCounter[j] = wordCounter[j] + 1;
+                            }
+                            else
+                            {
+                                wordCounter[j] = wordCounter[j - 1] + 1;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+            //add the last combination
+            tmpStr.Clear();
+            for (int i = 0; i < wordLen; i++)
+            {
+                tmpStr.Append(str[wordCounter[i]]);
+            }
+            result.Add(tmpStr.ToString());
+
+            return result;
+        }
+
+        public static List<List<int>> GetIntComposition(this int x, int minNum)
+        {
+            var result = new List<List<int>>();
+            return result;
+        }
     }
 }

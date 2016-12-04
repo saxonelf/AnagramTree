@@ -52,6 +52,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AnagramTreeTest.cs" />
+    <Compile Include="WordsRepositoryUnitTest.cs" />
     <Compile Include="PlayerUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
